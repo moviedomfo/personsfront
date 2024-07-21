@@ -28,7 +28,7 @@ export interface AuthenticateREQ {
     UserName: string;
     userId: string;
     roles: string[];
-    personId: number;
+    
   };
   
   export const initialUserSession: IUserSession = {
@@ -37,6 +37,6 @@ export interface AuthenticateREQ {
     UserName: "",
     roles: [],
     userId: "",
-    personId: -1,
+    
   };
   

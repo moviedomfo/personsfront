@@ -63,7 +63,7 @@ export class SecurityService {
             refresh_token: result.refresh_token,
             roles,
             userId: result.userId,
-            personId: result.personId,
+            
           };
 
 

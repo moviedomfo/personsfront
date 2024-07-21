@@ -17,7 +17,10 @@ export default class HelperFunctions {
 
     return undefined;
   };
+  public static setCurrenLoging = (userSession: IUserSession): void => {
+    const data = localStorage.setItem(AppConstants.STORAGE_NAME_MANUAL, JSON.stringify(userSession));
 
+  };
 
   public static getAccessTk = (): string | null => {
     let currentLogin: IUserSession = HelperFunctions.getCurrenLoging();
@@ -44,35 +47,7 @@ export default class HelperFunctions {
 
     return apiError;
   };
-  // public static GetAuthHeaders = () => {
-  //   const currentLogin = HelperFunctions.getCurrenLoging();
 
-  //   const headers = {
-  //     crossDomain: "true",
-  //     "Content-Type": "application/json",
-  //     "Access-Control-Allow-Origin": "*",
-  //     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  //     "Access-Control-Allow-Headers": "Origin, Content-Type, Authorization, X-Auth-Token",
-  //     'Authorization': `Bearer ${currentLogin?.access_token}`,
-  //     'securityProviderName': 'sportClub',
-
-  //   };
-  //   return headers;
-  // }
-
-  // public static GetHeaders = () => {
-  //   const headers = {
-  //     crossDomain: "true",
-  //     "Content-Type": "application/json",
-  //     "Access-Control-Allow-Origin": "*",
-  //     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  //     "Access-Control-Allow-Headers": "Origin, Content-Type, Authorization, X-Auth-Token",
-
-
-
-  //   };
-  //   return headers;
-  // }
 
   public static string_IsNullOrEmpty(str: string): boolean {
     if (!str || Object.keys(str.trim()).length === 0) {
