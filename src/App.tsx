@@ -1,5 +1,7 @@
 import './App.css';
-import Loging from './presenter/pages/Login';
+import { Route, Routes } from 'react-router-dom';
+import routes from '@/routes';
+import { ReactNode } from 'react';
 
 function App() {
   return (
@@ -12,10 +14,18 @@ function App() {
               <div className='mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]'>
                 {/*   Left column container */}
                 <div className='px-4 md:px-0 lg:w-6/12'>
-                  <Loging></Loging>
-                </div>
+                  <Routes>
+                    {routes.map((route, idx) => (
+                      <Route
+                        key={idx}
+                        path={route.path}
+                        element={<AppContainer content={route.component} />}
+                      />
+                    ))}
 
-        
+                    {/* <Route path='*' element={<Page404 />} /> */}
+                  </Routes>
+                </div>
               </div>
             </div>
           </div>
@@ -26,3 +36,10 @@ function App() {
 }
 
 export default App;
+interface ComponentProps {
+  content: ReactNode;
+}
+
+export const AppContainer = (props: ComponentProps) => {
+  return <div>{props.content}</div>;
+};

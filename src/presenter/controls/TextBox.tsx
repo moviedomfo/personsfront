@@ -15,22 +15,30 @@ const TextBox = (props: ITextBox) => {
   };
 
   return (
-    <div className='relative mb-4' data-twe-input-wrapper-init>
-      <input
-        type={props.type}
-        className='peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0'
-        id={props.id}
-        placeholder={props.placeholder}
-        onChange={onChangeHandle}
-        value={props.text}
-      />
+    <>
       <label
         htmlFor={props.id}
-        className='pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[0.9rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary'
+        className='block mb-2 text-sm font-medium
+        
+         text-gray-900 dark:text-white'
       >
         {props.label}
       </label>
-    </div>
+      <input
+        id={props.id}
+        type={props.type}
+        className='bg-gray-50 
+        rounded border-2
+        bg-transparent 
+         border-gray-300 text-gray-900 text-sm 
+         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+        placeholder='name@flowbite.com'
+        required
+        onChange={onChangeHandle}
+        value={props.text}
+      />
+    </>
   );
 };
 

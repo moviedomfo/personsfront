@@ -7,18 +7,15 @@ export default class HelperFunctions {
   public static getCurrenLoging = (): IUserSession | undefined => {
     const data = localStorage.getItem(AppConstants.STORAGE_NAME_MANUAL) || undefined;
     if (data) {
-      const parsedObject = JSON.parse(data);
-
-      const userSessionString = parsedObject.userSession;
-      const userSession: IUserSession = JSON.parse(userSessionString);
-
+      
+      const userSession: IUserSession = JSON.parse(data);
       return userSession;
     }
 
     return undefined;
   };
   public static setCurrenLoging = (userSession: IUserSession): void => {
-    const data = localStorage.setItem(AppConstants.STORAGE_NAME_MANUAL, JSON.stringify(userSession));
+    localStorage.setItem(AppConstants.STORAGE_NAME_MANUAL, JSON.stringify(userSession));
 
   };
 

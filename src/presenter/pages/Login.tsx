@@ -23,7 +23,8 @@ const Loging = () => {
 
         HelperFunctions.setCurrenLoging(userSession);
 
-        navigate(`/register/${userSession.userId}`);
+        navigate(`/userSetting`);
+        //navigate(`/collectfee/invoiceview/${res.userId}`);
       })
       .catch((err) => {
         setError(err);

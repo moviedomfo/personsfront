@@ -11,7 +11,7 @@ const AxiosInterseptor = () => {
 
   axios.interceptors.request.use(
     (req) => {
-      if (req.url?.includes("auth") || req.url?.includes("refresh")) {
+      if (req.url?.includes("authenticate") || req.url?.includes("refresh")) {
         setHeaderNotSecure(req);
         return req;
       } else {
@@ -114,9 +114,9 @@ const getErrorStatus = (err: AxiosError): number => {
     if (errResponse.status) {
       return errResponse.status;
     }
-    if (errResponse.data) {
-      if (errResponse.data.StatusCode) return parseInt(errResponse.data.StatusCode);
-    }
+    // if (errResponse.data) {
+    //   if (errResponse.data.statusCode) return parseInt(errResponse.data.statusCode);
+    // }
   }
 
   return HttpStatusCode.NotImplemented;
@@ -160,13 +160,13 @@ const getErrorMessage = (err: AxiosError, status?: number): string => {
   if (err.response) {
     const errResponse = err.response as ApiErrorResponse;
 
-    if (errResponse.data?.Error) {
-      message = message.concat(`\n ${errResponse.data.Error?.Message}`);
+    if (errResponse.data) {
+      message = message.concat(`\n ${errResponse.data.message}`);
       return message;
     }
 
     if (errResponse.data) {
-      message = `\n ${errResponse.data.Message}`;
+      message = `\n ${errResponse.data.message}`;
     }
   }
 

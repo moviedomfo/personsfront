@@ -4,7 +4,9 @@ import App from './App.tsx';
 import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
+import AxiosInterseptor from './infra/services/AxiosInterseptor.ts';
 
+AxiosInterseptor();
 const loading = (
   <div className='pt-3 text-center'>
     <div className='sk-spinner sk-spinner-pulse'></div>
