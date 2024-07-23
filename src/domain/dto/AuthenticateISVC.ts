@@ -28,8 +28,8 @@ export interface AuthenticateREQ {
     UserName: string;
     userId: string;
     roles: string[];
-    
-  };
+  //   token_2fa:string;
+   };
   
   export const initialUserSession: IUserSession = {
     access_token: "",
@@ -37,6 +37,6 @@ export interface AuthenticateREQ {
     UserName: "",
     roles: [],
     userId: "",
-    
+    // token_2fa:''
   };
   

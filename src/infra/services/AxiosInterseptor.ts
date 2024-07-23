@@ -84,16 +84,13 @@ const setHeader = (req: InternalAxiosRequestConfig<any>) => {
 };
 
 const getError = (err: AxiosError): CustomError => {
-  let message: string = "";
+
   const customError = new CustomError();
   const status = getErrorStatus(err);
 
-  // if (status === HttpStatusCode.NotImplemented && !err.code) {
-  //   customError.message = err.message;
-  //   customError.severity = "error";
-  //   customError.status = HttpStatusCode.InternalServerError;
-  //   return customError;
-  // }
+  const errCode = getErrorCode(err);
+  customError.code = errCode;
+
 
   customError.status = status ? status : HttpStatusCode.InternalServerError;
   customError.severity = "error";
@@ -173,5 +170,14 @@ const getErrorMessage = (err: AxiosError, status?: number): string => {
 
   return message;
 };
+const getErrorCode = (err: AxiosError, status?: number): string | undefined => {
+  if (err.response) {
+    const errResponse = err.response as ApiErrorResponse;
+    if (errResponse.data) {
+      return errResponse.data.errorCode;
+    }
+  }
+  return undefined;
+}
 
 export default AxiosInterseptor;

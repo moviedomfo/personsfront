@@ -1,6 +1,7 @@
 import { ICustomError } from "@/Domain/base/IMessage";
 import { IUserSession } from "@/Domain/dto/AuthenticateISVC";
 import { AppConstants } from "../CommonConstants";
+import Cookies from 'js-cookie';
 
 export default class HelperFunctions {
 
@@ -24,7 +25,17 @@ export default class HelperFunctions {
 
     return currentLogin.access_token ? currentLogin.access_token : null;
   };
+  public static setCookie = (name: string, value: string, days?: number) => {
+    const options = days ? { expires: days } : undefined;
+    Cookies.set(name, value, options);
+  };
+  public static  getCookie = (name: string): string | undefined => {
+    return Cookies.get(name);
+  };
 
+   removeCookie = (name: string) => {
+    Cookies.remove(name);
+  };
   public static GetError = (error: unknown): ICustomError => {
     return HelperFunctions.ReportError({
       message: HelperFunctions.GetErrorMessage(error),

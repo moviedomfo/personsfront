@@ -17,6 +17,8 @@ export enum ErrorCodeEnum {
   AUTH_REFRESH_TOKEN_EXPIRED = "201",
   AUTH_JWT_TOKEN_REQUIRED = "202",
   AUTH_JWT_TOKEN_EXPIRED = "203",
+  LOGIN_USER_2FA_FAIL = "1910",
+  LOGIN_USER_2FA_CodeRequested = "1911",
 
   /**
    * Connection timeout . Server es busy or not exist
@@ -35,4 +37,5 @@ export enum ErrorCodeEnum {
   MONGO_TIMEOUT = "5200",
   REDIS = "5300",
   REDIS_NOAUTH = "5301",
+
 }

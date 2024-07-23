@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 export interface IButton {
-  text: string;
   onClick: () => void;
-  
+  children: ReactNode;
   
   id?: string;
   // type: 'tel' | 'text' | 'date' | 'checkbox' | 'number' | 'password';
@@ -31,7 +30,7 @@ const Button = (props: IButton) => {
           dark:hover:bg-gray-700'
         onClick={props.onClick}
       >
-        {props.text}
+        {props.children}
       </button>
     </div>
   );

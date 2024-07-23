@@ -7,6 +7,7 @@ import GetQrImageRes from "@/Domain/dto/GetQrImageISVC";
 import { UserInfo } from "os";
 import { GetUserRes } from "@/Domain/dto/GetUserISVC";
 
+
 /**
  * Injectable service class that interact with Person Api Controller
  *
@@ -73,7 +74,19 @@ export class SecurityService {
 
           resolve(userSession);
         })
-        .catch((err) => reject(err));
+        .catch((err) => {
+          // const tempSession: IUserSession = {
+          //   UserName: userName,
+          //   access_token: '',
+          //   refresh_token: '',
+          //   roles: [],
+          //   userId: '',
+
+          // };
+          //HelperFunctions.setCurrenLoging(tempSession);
+          reject(err)
+        }
+        );
     });
   };
 
@@ -109,8 +122,14 @@ export class SecurityService {
       });
   };
 
-  public Set2FA = (userName: string, code: string): Promise<void> => {
-    const url = `${AppConst_Paths.AUTH_API_URL}/set2`;
+  /**
+   * 
+   * @param userName Sent 2FA code to server an if it's valid it's stored in a token_2fa Cookie, 
+   * @param code 
+   * @returns 
+   */
+  public Set2FA = (userName: string, code: string): Promise<boolean> => {
+    const url = `${AppConst_Paths.AUTH_API_URL}/set2FA`;
 
     const params = { userName, code };
     const config = {
@@ -122,8 +141,12 @@ export class SecurityService {
     return axios(config)
       .then((res) => {
 
+        HelperFunctions.setCookie(`token_2fa_${userName}`, code, 1);
+        return res.data;
       });
   };
+
+
 }
 
 
