@@ -13,7 +13,7 @@ const Loging = () => {
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<CustomError | null>(null);
-  const [twoFAEnable, setTwoFAEnable] = useState<boolean>(false);
+  const [twoFAVisible, settwoFAVisible] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
 
   const navigate = useNavigate();
@@ -34,8 +34,13 @@ const Loging = () => {
         //Login ok pero requiere 2FA
         if (err.code === ErrorCodeEnum.LOGIN_USER_2FA_CodeRequested) {
           alert('Se requiere codigo de verificacion doble factor');
-          setTwoFAEnable(true);
+          //settwoFAVisible(true);
+          navigate(`/userSetting`);
+        }
+        if (err.code === ErrorCodeEnum.LOGIN_USER_2FA_FAIL) {
+          alert('Se requiere codigo de renovar doble factor');
           /**habilitar textbox qr y boton de enviar */
+          settwoFAVisible(true);
         } else {
           setError(err);
           secService.Logout();
@@ -54,7 +59,9 @@ const Loging = () => {
       .Set2FA(userName, code)
       .then((res) => {
         if (res) {
-          navigate(`/dashboard`);
+          //navigate(`/dashboard`);
+          alert('Codigo enviado correctamente');
+          settwoFAVisible(false);
         } else alert('El codigo ingresado es incorrecto');
       })
       .catch((err) => {
@@ -77,10 +84,11 @@ const Loging = () => {
       </div>
 
       <form>
-        <p className='mb-4'>Please login to your account</p>
+        {/* <p className='mb-4'>Please login to your account</p> */}
         {/*Username input */}
         <TextBox
           type='text'
+          disable={twoFAVisible}
           id='inputUserName'
           text={userName}
           label={'Nombre usuario'}
@@ -89,6 +97,7 @@ const Loging = () => {
         ></TextBox>
         {/*Password input */}
         <TextBox
+          disable={twoFAVisible}
           type='password'
           id='inputPassword'
           text={password}
@@ -97,48 +106,39 @@ const Loging = () => {
           placeholder={'******'}
         ></TextBox>
 
-        {/*Submit button */}
-        <div className='mb-12 pb-1 pt-1 text-center'>
-          <Button onClick={onLogingHandle}>Log in</Button>
-
+        <div className='mt-3  text-center'>
+          <Button disable={twoFAVisible} onClick={onLogingHandle}>
+            Log in
+          </Button>
+        </div>
+        {twoFAVisible === true && (
+          <div className='flex flex-col items-start  mb-1'>
+            <TextBox
+              type='text'
+              id='inputCode'
+              text={code}
+              label={'Codigo'}
+              onChange={onChangeCodeHandle}
+              placeholder={''}
+            ></TextBox>
+            <p className='mb-2 font-mono text-center text-gray-500 '>
+              Ingrese el codigo 2FA
+            </p>
+            <button
+              type='button'
+              className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+              onClick={onSendCodeHandle}
+            >
+              Enviar codigo
+            </button>
+          </div>
+        )}
+        <div className='mb-1 mt-1 p-1 text-center'>
           {error && <Alert preText='' text={error.message}></Alert>}
         </div>
       </form>
-      <form>
-        {twoFAEnable === true && (
-          <form className='max-w-sm mx-auto'>
-            <div className='mb-5'>
-              <label
-                htmlFor='inputCode'
-                className='block mb-2 text-sm font-medium text-blue-00 dark:text-white'
-              >
-                Ingrese el codigo que obtuvo desde el autenticador
-              </label>
 
-              <div className='flex flex-col items-start  mb-5'>
-                <TextBox
-                  type='text'
-                  id='inputCode'
-                  text={code}
-                  label={'Codigo'}
-                  onChange={onChangeCodeHandle}
-                  placeholder={''}
-                ></TextBox>
-
-                <button
-                  type='button'
-                  className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                  onClick={onSendCodeHandle}
-                >
-                  Enviar codigo
-                </button>
-              </div>
-            </div>
-          </form>
-        )}
-        {error && <Alert preText='' text={error.message}></Alert>}
-        {/* <p className='mb-0 me-2'>Don't have an account?</p> */}
-      </form>
+      {/* {error && <Alert preText='' text={error.message}></Alert>} */}
     </div>
   );
 };

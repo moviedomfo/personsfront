@@ -35,7 +35,8 @@ export class SecurityService {
    * @returns 
    */
   public Auth = (userName: string, password: string): Promise<IUserSession> => {
-    const url = `${AppConst_Paths.AUTH_API_URL}/authenticate`
+    const url = `${AppConst_Paths.AUTH_API_URL}/authenticate`;
+    const twoFACode = HelperFunctions.getCookie(`token_2fa_${userName}`);
     const req = {
       userName: userName,
       password: password,
@@ -43,6 +44,7 @@ export class SecurityService {
       client_id: AppConstants.Auth_client_id,
       client_secret: AppConstants.Auth_client_secret,
       securityProviderName: "sportClub",
+      twoFACode
     };
 
     const config = {
@@ -75,15 +77,7 @@ export class SecurityService {
           resolve(userSession);
         })
         .catch((err) => {
-          // const tempSession: IUserSession = {
-          //   UserName: userName,
-          //   access_token: '',
-          //   refresh_token: '',
-          //   roles: [],
-          //   userId: '',
 
-          // };
-          //HelperFunctions.setCurrenLoging(tempSession);
           reject(err)
         }
         );
@@ -123,8 +117,8 @@ export class SecurityService {
   };
 
   /**
-   * 
-   * @param userName Sent 2FA code to server an if it's valid it's stored in a token_2fa Cookie, 
+   * Sent 2FA code to server an if it's valid it's stored in a token_2fa Cookie, 
+   * @param userName 
    * @param code 
    * @returns 
    */

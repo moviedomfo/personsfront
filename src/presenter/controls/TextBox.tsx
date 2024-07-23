@@ -6,6 +6,9 @@ export interface ITextBox {
   placeholder: string;
   label?: string;
   id: string;
+
+  disable?: boolean | false;
+
   type: 'tel' | 'text' | 'date' | 'checkbox' | 'number' | 'password';
 }
 const TextBox = (props: ITextBox) => {
@@ -19,12 +22,12 @@ const TextBox = (props: ITextBox) => {
       <label
         htmlFor={props.id}
         className='block mb-2 text-sm font-medium
-        
          text-gray-900 dark:text-white'
       >
         {props.label}
       </label>
       <input
+        disabled={props.disable}
         id={props.id}
         type={props.type}
         className='bg-gray-50 

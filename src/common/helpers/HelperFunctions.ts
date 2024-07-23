@@ -25,10 +25,21 @@ export default class HelperFunctions {
 
     return currentLogin.access_token ? currentLogin.access_token : null;
   };
+  /**
+   * 
+   * @param name Nombre cookie
+   * @param value valor
+   * @param days dias de vida
+   */
   public static setCookie = (name: string, value: string, days?: number) => {
     const options = days ? { expires: days } : undefined;
     Cookies.set(name, value, options);
   };
+  /**
+   * 
+   * @param name Nombre cookie
+   * @returns 
+   */
   public static  getCookie = (name: string): string | undefined => {
     return Cookies.get(name);
   };

@@ -18,8 +18,6 @@ const UserSetting = () => {
   const [qr, setQR] = useState<string>(undefined);
   const navigate = useNavigate();
 
-
-
   useEffect(() => {
     const session = HelperFunctions.getCurrenLoging();
     if (!session) navigate(`/login`);
@@ -69,7 +67,6 @@ const UserSetting = () => {
         if (res) {
           alert('El usuario ya tiene 2FA activado');
           sethideQR(true);
-          
         } else alert('El codigo ingresado es incorrecto');
       })
       .catch((err) => {
@@ -116,8 +113,9 @@ const UserSetting = () => {
       <form>
         {twoFAEnable === false && qr === undefined && (
           <div className='mb-5 p-5'>
-            
-            <Button onClick={onEnable2FAHandle}>Habilitar 2FA</Button>
+            <Button disable={false} onClick={onEnable2FAHandle}>
+              Habilitar 2FA
+            </Button>
           </div>
         )}
         {error && <Alert preText='' text={error.message}></Alert>}
