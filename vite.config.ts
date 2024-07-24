@@ -5,7 +5,8 @@ import * as path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: 'https://moviedomfo.github.com.io/personsfront',
+  // base: 'https://moviedomfo.github.com.io/personsfront',
+  base: '/personsfront/',
 
   resolve: {
     alias: [
