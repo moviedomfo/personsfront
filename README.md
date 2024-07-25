@@ -15,3 +15,10 @@ https://tw-elements.com/docs/react/getting-started/quick-start/
 ## material-tailwind
 
 https://www.material-tailwind.com/
+
+## deployd netlyfy
+
+    https://app.netlify.com/teams/moviedomfo/sites
+
+for routing copy \_dedirects file to dist
+https://sparkly-madeleine-b6f7c9.netlify.app

@@ -36,6 +36,7 @@ export class SecurityService {
    */
   public Auth = (userName: string, password: string): Promise<IUserSession> => {
     const url = `${AppConst_Paths.AUTH_API_URL}/authenticate`;
+
     const twoFACode = HelperFunctions.getCookie(`token_2fa_${userName}`);
     const req = {
       userName: userName,
@@ -53,7 +54,7 @@ export class SecurityService {
       url: url,
       data: JSON.stringify(req),
     };
-
+    //alert(url);
     return new Promise<IUserSession>((resolve, reject) => {
       return axios.request(config)
         .then((res) => {

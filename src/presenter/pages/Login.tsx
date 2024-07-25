@@ -14,6 +14,7 @@ const Loging = () => {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<CustomError | null>(null);
   const [twoFAVisible, settwoFAVisible] = useState<boolean>(false);
+  const [genQRVisible, setGenQRVisible] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
 
   const navigate = useNavigate();
@@ -34,12 +35,14 @@ const Loging = () => {
         //Login ok pero requiere 2FA
         if (err.code === ErrorCodeEnum.LOGIN_USER_2FA_CodeRequested) {
           alert('Se requiere codigo de verificacion doble factor');
-          //settwoFAVisible(true);
-          navigate(`/userSetting`);
+          settwoFAVisible(true);
+          const session = secService.GetCurrenLoging();
+          if (session) navigate(`/userGenerate2FA`);
+          else setGenQRVisible(true);
         }
         if (err.code === ErrorCodeEnum.LOGIN_USER_2FA_FAIL) {
           alert('Se requiere codigo de renovar doble factor');
-          /**habilitar textbox qr y boton de enviar */
+          /**habilitar textbox 2FA y boton de enviar */
           settwoFAVisible(true);
         } else {
           setError(err);
@@ -71,6 +74,10 @@ const Loging = () => {
   const onChangeCodeHandle = (value: string) => {
     setCode(value);
   };
+  const onGenQrHandle = () => {
+    navigate(`/userSetting`);
+  };
+
   return (
     <div className='md:mx-6 md:p-12'>
       {/*Logo */}
@@ -131,6 +138,9 @@ const Loging = () => {
             >
               Enviar codigo
             </button>
+            <Button disable={!genQRVisible} onClick={onGenQrHandle}>
+              Generar QR
+            </Button>
           </div>
         )}
         <div className='mb-1 mt-1 p-1 text-center'>
