@@ -13,7 +13,7 @@ const Loging = () => {
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<CustomError | null>(null);
-  const [twoFAVisible, settwoFAVisible] = useState<boolean>(false);
+  const [twoFAVisible, setTwoFAVisible] = useState<boolean>(false);
   const [genQRVisible, setGenQRVisible] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
 
@@ -35,7 +35,7 @@ const Loging = () => {
         //Login ok pero requiere 2FA
         if (err.code === ErrorCodeEnum.LOGIN_USER_2FA_CodeRequested) {
           alert('Se requiere codigo de verificacion doble factor');
-          settwoFAVisible(true);
+          setTwoFAVisible(true);
           const session = secService.GetCurrenLoging();
           if (session) navigate(`/userGenerate2FA`);
           else setGenQRVisible(true);
@@ -43,7 +43,7 @@ const Loging = () => {
         if (err.code === ErrorCodeEnum.LOGIN_USER_2FA_FAIL) {
           alert('Se requiere codigo de renovar doble factor');
           /**habilitar textbox 2FA y boton de enviar */
-          settwoFAVisible(true);
+          setTwoFAVisible(true);
         } else {
           setError(err);
           secService.Logout();
@@ -64,7 +64,7 @@ const Loging = () => {
         if (res) {
           //navigate(`/dashboard`);
           alert('Codigo enviado correctamente');
-          settwoFAVisible(false);
+          setTwoFAVisible(false);
         } else alert('El codigo ingresado es incorrecto');
       })
       .catch((err) => {
