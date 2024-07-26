@@ -12,8 +12,8 @@ const routes: IRoute[] = [
   { path: '/', name: 'Login', component: <Login></Login> },
   { path: '/login', name: 'Login', component: <Login></Login> },
   {
-    path: '/userSetting',
-    name: 'userSetting',
+    path: '/userSettings',
+    name: 'userSettings',
     component: <UserSetting></UserSetting>,
   },
   {

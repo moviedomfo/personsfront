@@ -140,8 +140,24 @@ export class SecurityService {
         return res.data;
       });
   };
+  
+  public Disable2FA = (userName: string): Promise<boolean> => {
+    const url = `${AppConst_Paths.AUTH_API_URL}/disable2FA`;
 
+    const params = { userName };
+    const config = {
+      method: "get",
+      url: url,
+      params: params,
+    };
 
+    return axios(config)
+      .then((res) => {
+
+        HelperFunctions.setCookie(`token_2fa_${userName}`, undefined, 1);
+        return res.data;
+      });
+  };
 }
 
 

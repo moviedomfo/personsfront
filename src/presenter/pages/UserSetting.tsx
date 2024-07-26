@@ -14,7 +14,7 @@ const UserSetting = () => {
   const [code, setCode] = useState<string>('');
   const [error, setError] = useState<CustomError | null>(null);
   const [userSession, setuserSession] = useState<IUserSession>(undefined);
-  const [twoFAEnable, setTwoFAEnable] = useState<boolean>(undefined);
+  const [showEnable2FA, setShowEnable2FA] = useState<boolean>(undefined);
   const [qr, setQR] = useState<string>(undefined);
   const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ const UserSetting = () => {
     secService
       .GetUser(userName)
       .then((res) => {
-        setTwoFAEnable(res.User.twoFAenabled);
+        setShowEnable2FA(true);
       })
       .catch((err) => {
         setError(err);
@@ -115,10 +115,10 @@ const UserSetting = () => {
         )}
       </form>
       <form>
-        {twoFAEnable && qr === undefined && (
+        {showEnable2FA && qr === undefined && (
           <div className='flex flex-col items-start  mb-5'>
             <div className='block mb-2 text-sm text-wrap font-medium text-blue-950 dark:text-white'>
-              Usuario logueado
+              Usuario logueado {'  '}
               <span className='text-sm  font-bold text-blue-950'>
                 {userSession.UserName}
               </span>

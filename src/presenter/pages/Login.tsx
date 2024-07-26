@@ -28,7 +28,7 @@ const Loging = () => {
 
         HelperFunctions.setCurrenLoging(userSession);
         navigate(`/dashboard`);
-        //navigate(`/userSetting`);
+        //navigate(`/userSettings`);
       })
       .catch((e) => {
         const err: CustomError = e as CustomError;
@@ -75,7 +75,7 @@ const Loging = () => {
     setCode(value);
   };
   const onGenQrHandle = () => {
-    navigate(`/userSetting`);
+    navigate(`/userSettings`);
   };
 
   return (
