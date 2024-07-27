@@ -2,6 +2,8 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import routes from '@/routes';
 import { ReactNode } from 'react';
+import Navbar from './presenter/layout/Navbar';
+import { TwoFAContextProvider } from './presenter/pages/context/2FAContextProvider';
 
 function App() {
   return (
@@ -10,22 +12,24 @@ function App() {
         <div className='flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200'>
           <div className='w-full'>
             <div className='block rounded-lg bg-white shadow-lg dark:bg-neutral-800'>
-              {/* <div className='g-0 lg:flex lg:flex-wrap'> */}
-              <div className='mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]'>
-                {/*   Left column container */}
-                <div className='px-4 md:px-0 lg:w-6/12'>
-                  <Routes>
-                    {routes.map((route, idx) => (
-                      <Route
-                        key={idx}
-                        path={route.path}
-                        element={<AppContainer content={route.component} />}
-                      />
-                    ))}
-
-                    {/* <Route path='*' element={<Page404 />} /> */}
-                  </Routes>
-                </div>
+              <div className=''>
+                <TwoFAContextProvider>
+                  {/* min-h-full */}
+                  <Navbar></Navbar>
+                  <main>
+                    <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
+                      <Routes>
+                        {routes.map((route, idx) => (
+                          <Route
+                            key={idx}
+                            path={route.path}
+                            element={<AppContainer content={route.component} />}
+                          />
+                        ))}
+                      </Routes>
+                    </div>
+                  </main>
+                </TwoFAContextProvider>
               </div>
             </div>
           </div>

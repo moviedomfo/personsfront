@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TextBox from '../controls/TextBox';
 import HelperFunctions from '@/Common/helpers/HelperFunctions';
 import { IUserSession } from '@/Domain/dto/AuthenticateISVC';
@@ -7,7 +7,8 @@ import { SecurityService } from '@/infra/services/security.service';
 import { CustomError } from '@/Domain/base/IMessage';
 import Alert from '../controls/Alert';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Label } from '@headlessui/react';
+import { TwoFAContext } from './context/2FAContextContext';
+import { UserSimpleViewDTO } from '@/Domain/dto/GetUserISVC';
 
 const UserSetting = () => {
   const [hideQR, sethideQR] = useState<boolean>(true);
@@ -17,6 +18,8 @@ const UserSetting = () => {
   const [showEnable2FA, setShowEnable2FA] = useState<boolean>(undefined);
   const [qr, setQR] = useState<string>(undefined);
   const navigate = useNavigate();
+  // const { twoFAEnable, user } = useContext(TwoFAContext);
+  const [user, setUser] = useState<UserSimpleViewDTO>(undefined);
 
   useEffect(() => {
     const session = HelperFunctions.getCurrenLoging();
@@ -30,10 +33,40 @@ const UserSetting = () => {
       getUser(userSession.UserName);
     }
   }, [userSession]);
+
+  useEffect(() => {
+    if (user?.twoFAenabled === false) {
+      setShowEnable2FA(true);
+    } else {
+      setShowEnable2FA(false);
+    }
+    //alert(twoFAEnable);
+    // if (userSession) {
+    //   setShowEnable2FA(twoFAEnable);
+    // }
+  }, [user]);
+
+  const getUser = async (userName: string) => {
+    // setIsLoading(true);
+    const secService: SecurityService = new SecurityService();
+
+    try {
+      const res = await secService.GetUser(userName);
+      setUser(res.User);
+      // setTwoFAEnable(res.User.twoFAenabled);
+      //alert(twoFAEnable);
+      // alert(res.User.twoFAenabled);
+    } catch (e) {
+      // setIsLoading(false);
+      setError(e as CustomError);
+    }
+  };
+
   const onChangeHandle = (value: string) => {
     setCode(value);
   };
   const onEnable2FAHandle = () => {
+    setError(undefined);
     const secService: SecurityService = new SecurityService();
     secService
       .GetQrImage(userSession.UserName)
@@ -46,20 +79,8 @@ const UserSetting = () => {
       });
   };
 
-  const getUser = (userName: string) => {
-    const secService: SecurityService = new SecurityService();
-    secService
-      .GetUser(userName)
-      .then((res) => {
-        setShowEnable2FA(true);
-      })
-      .catch((err) => {
-        setError(err);
-        secService.Logout();
-      });
-  };
-
   const onSendCodeHandle = () => {
+    setError(undefined);
     const secService: SecurityService = new SecurityService();
     secService
       .Set2FA(userSession.UserName, code)

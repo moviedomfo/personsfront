@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import AxiosInterseptor from './infra/services/AxiosInterseptor.ts';
+import { TwoFAContextProvider } from './presenter/pages/context/2FAContextProvider.tsx';
 
 AxiosInterseptor();
 const loading = (
@@ -16,7 +17,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <React.Suspense fallback={loading}>
-        <App />
+
+          <App />
+
       </React.Suspense>
     </BrowserRouter>
   </React.StrictMode>

@@ -27,7 +27,7 @@ const Loging = () => {
         const userSession: IUserSession = res;
 
         HelperFunctions.setCurrenLoging(userSession);
-        navigate(`/dashboard`);
+        navigate(`/home`);
         //navigate(`/userSettings`);
       })
       .catch((e) => {
@@ -65,6 +65,7 @@ const Loging = () => {
           //navigate(`/dashboard`);
           alert('Codigo enviado correctamente');
           setTwoFAVisible(false);
+          setError(undefined);
         } else alert('El codigo ingresado es incorrecto');
       })
       .catch((err) => {
@@ -79,75 +80,77 @@ const Loging = () => {
   };
 
   return (
-    <div className='md:mx-6 md:p-12'>
-      {/*Logo */}
-      <div className='text-center'>
-        <img
-          className='mx-auto w-48'
-          src='https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp'
-          alt='logo'
-        />
-        <h4 className='mb-12 mt-1 pb-1 text-xl font-semibold'>Olecram dev</h4>
-      </div>
-
-      <form>
-        {/* <p className='mb-4'>Please login to your account</p> */}
-        {/*Username input */}
-        <TextBox
-          type='text'
-          disable={twoFAVisible}
-          id='inputUserName'
-          text={userName}
-          label={'Nombre usuario'}
-          onChange={onChangeUserNameHandle}
-          placeholder={'username'}
-        ></TextBox>
-        {/*Password input */}
-        <TextBox
-          disable={twoFAVisible}
-          type='password'
-          id='inputPassword'
-          text={password}
-          label={'Passwpord'}
-          onChange={onChangePasswordHandle}
-          placeholder={'******'}
-        ></TextBox>
-
-        <div className='mt-3  text-center'>
-          <Button disable={twoFAVisible} onClick={onLogingHandle}>
-            Log in
-          </Button>
+    // <div className='md:mx-6 md:p-12'>
+    <div className='flex items-center justify-center bg-gray-100'>
+      <div className='p-3 w-full max-w-sm bg-white rounded-lg shadow-md'>
+        {/*Logo */}
+        <div className='text-center'>
+          <img
+            className='mx-auto w-48'
+            src='https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp'
+            alt='logo'
+          />
+          <h4 className='mb-12 mt-1 pb-1 text-xl font-semibold'>Olecram dev</h4>
         </div>
-        {twoFAVisible === true && (
-          <div className='flex flex-col items-start  mb-1'>
-            <TextBox
-              type='text'
-              id='inputCode'
-              text={code}
-              label={'Codigo'}
-              onChange={onChangeCodeHandle}
-              placeholder={''}
-            ></TextBox>
-            <p className='mb-2 font-mono text-center text-gray-500 '>
-              Ingrese el codigo 2FA
-            </p>
-            <button
-              type='button'
-              className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-              onClick={onSendCodeHandle}
-            >
-              Enviar codigo
-            </button>
-            <Button disable={!genQRVisible} onClick={onGenQrHandle}>
-              Generar QR
+
+        <form>
+          {/* <p className='mb-4'>Please login to your account</p> */}
+          {/*Username input */}
+          <TextBox
+            type='text'
+            disable={twoFAVisible}
+            id='inputUserName'
+            text={userName}
+            label={'Nombre usuario'}
+            onChange={onChangeUserNameHandle}
+            placeholder={'username'}
+          ></TextBox>
+          {/*Password input */}
+          <TextBox
+            disable={twoFAVisible}
+            type='password'
+            id='inputPassword'
+            text={password}
+            label={'Passwpord'}
+            onChange={onChangePasswordHandle}
+            placeholder={'******'}
+          ></TextBox>
+
+          <div className='mt-3  text-center'>
+            <Button disable={twoFAVisible} onClick={onLogingHandle}>
+              Log in
             </Button>
           </div>
-        )}
-        <div className='mb-1 mt-1 p-1 text-center'>
-          {error && <Alert preText='' text={error.message}></Alert>}
-        </div>
-      </form>
-
+          {twoFAVisible === true && (
+            <div className='flex flex-col items-start  mb-1'>
+              <TextBox
+                type='text'
+                id='inputCode'
+                text={code}
+                label={'Codigo'}
+                onChange={onChangeCodeHandle}
+                placeholder={''}
+              ></TextBox>
+              <p className='mb-2 font-mono text-center text-gray-500 '>
+                Ingrese el codigo 2FA
+              </p>
+              <button
+                type='button'
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                onClick={onSendCodeHandle}
+              >
+                Enviar codigo
+              </button>
+              <Button disable={!genQRVisible} onClick={onGenQrHandle}>
+                Generar QR
+              </Button>
+            </div>
+          )}
+          <div className='mb-1 mt-1 p-1 text-center'>
+            {error && <Alert preText='' text={error.message}></Alert>}
+          </div>
+        </form>
+      </div>
       {/* {error && <Alert preText='' text={error.message}></Alert>} */}
     </div>
   );
