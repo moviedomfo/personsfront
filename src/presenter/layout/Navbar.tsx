@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CustomError } from '@/Domain/base/IMessage';
-import { IUserSession } from '@/Domain/dto/AuthenticateISVC';
+// import { CustomError } from '@/Domain/base/IMessage';
+// import { IUserSession } from '@/Domain/dto/AuthenticateISVC';
 import { SecurityService } from '@/infra/services/security.service';
-import { TwoFAContext } from '../pages/context/2FAContextContext';
-import HelperFunctions from '@/Common/helpers/HelperFunctions';
+// import { TwoFAContext } from '../pages/context/2FAContextContext';
+// import HelperFunctions from '@/Common/helpers/HelperFunctions';
 import { useTwoFAContext } from '../pages/context/2FAContextProvider';
 
 const Navbar = () => {
@@ -12,25 +12,24 @@ const Navbar = () => {
   //   const [isAuth, setIsAuth] = useState<boolean>(false);
 
   const navigate = useNavigate();
-  const { twoFAEnable} = useTwoFAContext();
+  const { twoFAEnable } = useTwoFAContext();
   const secService: SecurityService = new SecurityService();
   const isAuth = secService.IsAuth();
 
   useEffect(() => {
     //const secService: SecurityService = new SecurityService();
-    
     //const authenticated = secService.IsAuth();
     //setIsAuth(authenticated);
-  }, []);
+  }, [twoFAEnable]);
   const onLogOutHandler = () => {
     const secService: SecurityService = new SecurityService();
     secService.Logout();
     //setIsAuth(false);
     navigate(`/login`);
   };
-//   useEffect(() => {
-//     alert(isAuth);
-//   }, [isAuth]);
+  //   useEffect(() => {
+  //     alert(isAuth);
+  //   }, [isAuth]);
   //   const onRemove2FAHandler = () => {
   //     setShowDisableFA(true);
   //   };
@@ -107,10 +106,10 @@ const Navbar = () => {
                   Dashboard
                 </a>
                 <a
-                  href='#'
+                  href='/home'
                   className='rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white'
                 >
-                  Team
+                  Home
                 </a>
                 <a
                   href='#'
@@ -175,23 +174,25 @@ const Navbar = () => {
 
             {/*  Profile dropdown */}
             <div className='relative ml-3'>
-              <div>
-                <button
-                  type='button'
-                  className='relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
-                  id='user-menu-button'
-                  aria-expanded='false'
-                  aria-haspopup='true'
-                >
-                  <span className='absolute -inset-1.5'></span>
-                  <span className='sr-only'>Open user menu</span>
-                  <img
-                    className='h-8 w-8 rounded-full'
-                    src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                    alt=''
-                  ></img>
-                </button>
-              </div>
+              {isAuth && (
+                <div>
+                  <button
+                    type='button'
+                    className='relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+                    id='user-menu-button'
+                    aria-expanded='false'
+                    aria-haspopup='true'
+                  >
+                    <span className='absolute -inset-1.5'></span>
+                    <span className='sr-only'>Open user menu</span>
+                    <img
+                      className='h-8 w-8 rounded-full'
+                      src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+                      alt=''
+                    ></img>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

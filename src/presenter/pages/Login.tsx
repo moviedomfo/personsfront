@@ -28,25 +28,30 @@ const Loging = () => {
 
         HelperFunctions.setCurrenLoging(userSession);
         navigate(`/home`);
-        //navigate(`/userSettings`);
       })
       .catch((e) => {
         const err: CustomError = e as CustomError;
-        //Login ok pero requiere 2FA
-        if (err.code === ErrorCodeEnum.LOGIN_USER_2FA_CodeRequested) {
-          alert('Se requiere codigo de verificacion doble factor');
-          setTwoFAVisible(true);
-          const session = secService.GetCurrenLoging();
-          if (session) navigate(`/userGenerate2FA`);
-          else setGenQRVisible(true);
-        }
-        if (err.code === ErrorCodeEnum.LOGIN_USER_2FA_FAIL) {
-          alert('Se requiere codigo de renovar doble factor');
-          /**habilitar textbox 2FA y boton de enviar */
-          setTwoFAVisible(true);
-        } else {
-          setError(err);
-          secService.Logout();
+        const session = secService.GetCurrenLoging();
+
+        switch (err.code) {
+          case ErrorCodeEnum.LOGIN_USER_2FA_CodeRequested:
+            alert('Se requiere codigo de verificacion doble factor');
+            setTwoFAVisible(true);
+            if (session) {
+              navigate(`/userGenerate2FA`);
+            } else {
+              setGenQRVisible(true);
+            }
+            break;
+          case ErrorCodeEnum.LOGIN_USER_2FA_FAIL:
+            alert('Se requiere codigo de renovar doble factor');
+            setTwoFAVisible(true);
+            setError(undefined);
+            break;
+          default:
+            setError(err);
+            secService.Logout();
+            break;
         }
       });
   };
@@ -56,6 +61,7 @@ const Loging = () => {
   const onChangePasswordHandle = (value: string) => {
     setPassword(value);
   };
+
   const onSendCodeHandle = () => {
     const secService: SecurityService = new SecurityService();
     secService
@@ -76,11 +82,10 @@ const Loging = () => {
     setCode(value);
   };
   const onGenQrHandle = () => {
-    navigate(`/userSettings`);
+    navigate(`/userGenerate2FA`);
   };
 
   return (
-    // <div className='md:mx-6 md:p-12'>
     <div className='flex items-center justify-center bg-gray-100'>
       <div className='p-3 w-full max-w-sm bg-white rounded-lg shadow-md'>
         {/*Logo */}
@@ -94,7 +99,6 @@ const Loging = () => {
         </div>
 
         <form>
-          {/* <p className='mb-4'>Please login to your account</p> */}
           {/*Username input */}
           <TextBox
             type='text'
@@ -134,16 +138,30 @@ const Loging = () => {
               <p className='mb-2 font-mono text-center text-gray-500 '>
                 Ingrese el codigo 2FA
               </p>
-              <button
-                type='button'
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                onClick={onSendCodeHandle}
-              >
-                Enviar codigo
-              </button>
-              <Button disable={!genQRVisible} onClick={onGenQrHandle}>
-                Generar QR
-              </Button>
+              <div className='flex flex-row space-x-4'>
+                <button
+                  type='button'
+                  className='
+                  px-5 py-2.5 
+                  text-white
+                  bg-blue-700
+                  hover:bg-blue-800 
+                  focus:ring-4 
+                  focus:outline-none
+                  focus:ring-blue-300 
+                  font-medium rounded-lg 
+                  text-sm w-full sm:w-auto 
+                  text-center
+                   dark:bg-blue-600
+                   dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                  onClick={onSendCodeHandle}
+                >
+                  Enviar codigo
+                </button>
+                <Button disable={!genQRVisible} onClick={onGenQrHandle}>
+                  Generar QR
+                </Button>
+              </div>
             </div>
           )}
           <div className='mb-1 mt-1 p-1 text-center'>
@@ -151,7 +169,6 @@ const Loging = () => {
           </div>
         </form>
       </div>
-      {/* {error && <Alert preText='' text={error.message}></Alert>} */}
     </div>
   );
 };

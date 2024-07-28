@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 export interface IButton {
   onClick: () => void;
   children: ReactNode;
-  disable:boolean;
+  disable: boolean;
   id?: string;
   // type: 'tel' | 'text' | 'date' | 'checkbox' | 'number' | 'password';
 }
@@ -12,7 +12,10 @@ const Button = (props: IButton) => {
       <button
         disabled={props.disable}
         type='button'
-        className='py-2.5 px-5 me-2 mb-2 text-sm font-medium
+        className='
+        px-5 py-2.5 
+        text-sm 
+        font-medium
          text-gray-900 
          focus:outline-none 
          bg-white 

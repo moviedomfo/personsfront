@@ -18,8 +18,8 @@ const UserSetting = () => {
   const [showEnable2FA, setShowEnable2FA] = useState<boolean>(undefined);
   const [qr, setQR] = useState<string>(undefined);
   const navigate = useNavigate();
-  // const { twoFAEnable, user } = useContext(TwoFAContext);
-  const [user, setUser] = useState<UserSimpleViewDTO>(undefined);
+  const { twoFAEnable, user } = useContext(TwoFAContext);
+  // const [user, setUser] = useState<UserSimpleViewDTO>(undefined);
 
   useEffect(() => {
     const session = HelperFunctions.getCurrenLoging();
@@ -28,39 +28,36 @@ const UserSetting = () => {
     return () => {};
   }, []);
 
-  useEffect(() => {
-    if (userSession) {
-      getUser(userSession.UserName);
-    }
-  }, [userSession]);
+  // useEffect(() => {
+  //   if (userSession) {
+  //     getUser(userSession.UserName);
+  //   }
+  // }, [userSession]);
 
   useEffect(() => {
-    if (user?.twoFAenabled === false) {
+    // if (user?.twoFAenabled === false) {
+    if (twoFAEnable === false) {
       setShowEnable2FA(true);
     } else {
       setShowEnable2FA(false);
     }
-    //alert(twoFAEnable);
-    // if (userSession) {
-    //   setShowEnable2FA(twoFAEnable);
-    // }
   }, [user]);
 
-  const getUser = async (userName: string) => {
-    // setIsLoading(true);
-    const secService: SecurityService = new SecurityService();
+  // const getUser = async (userName: string) => {
+  //   // setIsLoading(true);
+  //   const secService: SecurityService = new SecurityService();
 
-    try {
-      const res = await secService.GetUser(userName);
-      setUser(res.User);
-      // setTwoFAEnable(res.User.twoFAenabled);
-      //alert(twoFAEnable);
-      // alert(res.User.twoFAenabled);
-    } catch (e) {
-      // setIsLoading(false);
-      setError(e as CustomError);
-    }
-  };
+  //   try {
+  //     const res = await secService.GetUser(userName);
+  //     setUser(res.User);
+  //     // setTwoFAEnable(res.User.twoFAenabled);
+  //     //alert(twoFAEnable);
+  //     // alert(res.User.twoFAenabled);
+  //   } catch (e) {
+  //     // setIsLoading(false);
+  //     setError(e as CustomError);
+  //   }
+  // };
 
   const onChangeHandle = (value: string) => {
     setCode(value);

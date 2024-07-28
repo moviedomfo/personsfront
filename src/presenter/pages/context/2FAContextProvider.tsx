@@ -30,8 +30,7 @@ const TwoFAContextProvider = ({ children }: Props) => {
       const res = await secService.GetUser(userName);
       setUser(res.User);
       setTwoFAEnable(res.User.twoFAenabled);
-      //alert(twoFAEnable);
-      // alert(res.User.twoFAenabled);
+
     } catch (e) {
       setIsLoading(false);
       setApiError(e as ICustomError);
