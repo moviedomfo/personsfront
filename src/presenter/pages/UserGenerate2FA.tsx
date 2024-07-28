@@ -26,10 +26,10 @@ const UserGenerate2FA = () => {
   const onEnable2FAHandle = async () => {
     const secService: SecurityService = new SecurityService();
     setError(undefined);
+    /** Only for user existe verification */
     if (userName) {
       try {
-        const user = await secService.GetUser(userName);
-        
+        await secService.GetUser(userName);
       } catch (e) {
         setError(e);
         return;
@@ -60,7 +60,7 @@ const UserGenerate2FA = () => {
       .Set2FA(userName, code)
       .then((res) => {
         if (res) {
-          alert('El usuario ya tiene 2FA activado');
+          alert('2FA activado');
           sethideQR(true);
           setEnableLogin(true);
         } else alert('El codigo ingresado es incorrecto');
@@ -72,71 +72,75 @@ const UserGenerate2FA = () => {
   };
   return (
     <div className='md:mx-6 md:p-10'>
-      <form className='max-w-sm mx-auto'>
-        {(qr || hideQR === false) && (
-          <div className='mb-5'>
-            <img src={qr} alt='qr' className='w-1/2' />
+      {!enableLogin && (
+        <form className='max-w-sm mx-auto'>
+          {(qr || hideQR === false) && (
+            <div className='mb-5'>
+              <img src={qr} alt='qr' className='w-1/2' />
 
-            <label
-              htmlFor='inputCode'
-              className='block mb-2 text-sm font-medium text-blue-00 dark:text-white'
-            >
-              Ingrese el codigo que obtuvo desde el autenticador
-            </label>
-
-            <div className='flex flex-col items-start  mb-5'>
-              <TextBox
-                type='text'
-                id='inputCode'
-                text={code}
-                label={'Codigo'}
-                onChange={onChangeHandle}
-                placeholder={''}
-              ></TextBox>
-              {/* <Button onClick={onSendCodeHandle}>Enviar codigo</Button> */}
-
-              <button
-                type='button'
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                onClick={onSendCodeHandle}
+              <label
+                htmlFor='inputCode'
+                className='block mb-2 text-sm font-medium text-blue-00 dark:text-white'
               >
-                Enviar codigo
-              </button>
+                Ingrese el codigo que obtuvo desde el autenticador
+              </label>
+
+              <div className='flex flex-col items-start  mb-5'>
+                <TextBox
+                  type='text'
+                  id='inputCode'
+                  text={code}
+                  label={'Codigo'}
+                  onChange={onChangeHandle}
+                  placeholder={''}
+                ></TextBox>
+                {/* <Button onClick={onSendCodeHandle}>Enviar codigo</Button> */}
+
+                <button
+                  type='button'
+                  className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                  onClick={onSendCodeHandle}
+                >
+                  Enviar codigo
+                </button>
+              </div>
             </div>
-          </div>
-        )}
-      </form>
-      <form>
-        {qr === undefined && (
-          <>
-            <div className='mb-2 p-2'>
-              <TextBox
-                type='text'
-                id='inputUserName'
-                text={userName}
-                label={'usuario'}
-                onChange={onChangeUserNameHandle}
-                placeholder={''}
-              ></TextBox>
-            </div>
-            <div className='mb-2 p-2'>
-              <Button disable={false} onClick={onEnable2FAHandle}>
-                Habilitar 2FA
-              </Button>
-            </div>
-          </>
-        )}
-        {error && <Alert preText='' text={error.message}></Alert>}
-      </form>
-      <form>
-        {(enableLogin) && (
+          )}
+        </form>
+      )}
+      {!enableLogin && (
+        <form>
+          {qr === undefined && (
+            <>
+              <div className='mb-2 p-2'>
+                <TextBox
+                  type='text'
+                  id='inputUserName'
+                  text={userName}
+                  label={'usuario'}
+                  onChange={onChangeUserNameHandle}
+                  placeholder={''}
+                ></TextBox>
+              </div>
+              <div className='mb-2 p-2'>
+                <Button disable={false} onClick={onEnable2FAHandle}>
+                  Habilitar 2FA
+                </Button>
+              </div>
+            </>
+          )}
+          {error && <Alert preText='' text={error.message}></Alert>}
+        </form>
+      )}
+      {enableLogin && (
+        <form>
           <div className='mb-2 p-2'>
             <Button disable={false} onClick={onGoToLoginHandle}>
               Ir a inicio de sesion
             </Button>
           </div>
-        )}
-      </form>
+        </form>
+      )}
     </div>
   );
 };
